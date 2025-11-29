@@ -27,7 +27,8 @@ public class ParkingLotManager {
         
         
         // ------------ Create Strategy & Payment ------------
-        SpotAssignmentStrategy strategy = new Nearestspotstrategy();
+        SpotAssignmentStrategy nearest = new Nearestspotstrategy();
+        SpotAssignmentStrategy strategy = new EmergencyPrioritySpotStrategy(nearest);
         PaymentService paymentService = new PaymentService();
 
         // ------------ Create Gates ------------
@@ -81,7 +82,7 @@ public class ParkingLotManager {
         //------------SIMULATION--------------------
         List<Ticket> activeTickets = new ArrayList<>();
         Random random = new Random();
-        int totalTicketsToGenerate = 15;
+        int totalTicketsToGenerate = 5;
         int vehicleCounter = 1;
         
         System.out.println("\n=== STARTING ENTRY SIMULATION ===");
@@ -158,10 +159,13 @@ public class ParkingLotManager {
     }
 	
 	private static Vehicle randomVehicle(int count) {
-        switch (count % 3) {
+        switch (count % 6) {
             case 0: return new Car("CAR-" + count);
             case 1: return new Motorcycle("BIKE-" + count);
-            default: return new Truck("TRUCK-" + count);
+            case 2: return new Truck("TRUCK-" + count);
+            case 3: return new Ambulance("AMB-" + count);
+            case 4: return new FireTruck("FIRE-" + count);
+            default: return new PoliceCar("POLICE-" + count);
         }
     }
 
