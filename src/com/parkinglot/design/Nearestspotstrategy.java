@@ -4,7 +4,7 @@ public class Nearestspotstrategy implements SpotAssignmentStrategy{
 
 	public ParkingSpot findSpot(ParkingLot lot, Vehicle vehicle) {
 		for(ParkingFloor floor :lot.getParkingFloors() ) {
-			System.out.println("Floor " + floor.getParkingFloorId() + " in : " + lot.getParkingLotId());
+//			System.out.println("Floor " + floor.getParkingFloorId() + " in : " + lot.getParkingLotId());
 
 			ParkingSpot spot= floor.getAvailableSpot(getSpotType(vehicle));
 			if(spot!=null) {

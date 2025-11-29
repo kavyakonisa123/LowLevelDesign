@@ -45,35 +45,90 @@ public class ParkingLotManager {
         entryGate1.setParkingLot(lot);
         entryGate2.setParkingLot(lot);
         
-     // ------------ Show initial display ------------
-        System.out.println("=== INITIAL DISPLAY ===");
+        // ------------one vehicle entry and exit-------------
+//     // ------------ Show initial display ------------
+//        System.out.println("=== INITIAL DISPLAY ===");
+//        showAllFloors(lot);
+//
+//
+//		System.out.println("\n--- VEHICLE ARRIVES ---");
+//		Vehicle v1 = new Car("KA-01-9999");
+//
+//		Ticket t1 = entryGate1.generateTicket(v1);
+//		System.out.println("Ticket Generated:");
+//		System.out.println("Ticket ID: " + t1.getTickedId());
+//		System.out.println("Entry Time: " + t1.getEntryTimestamp());
+//		System.out.println("Spot Assigned: " + t1.getAssignedSpot().getSpotType());
+//
+//        showAllFloors(lot);
+//
+//
+//		Thread.sleep(3000);
+//
+//		// At EXIT GATR
+//		System.out.println("\n--- VEHICLE EXITING ---");
+//
+//		double amount = exitGate1.processExit(t1);
+//		System.out.println("Payment Successful!");
+//		System.out.println("Total Fee = $" + amount);
+//
+//        showAllFloors(lot);
+//
+//		System.out.println("\n--- FLOW COMPLETE ---");
+        
         showAllFloors(lot);
 
+        //------------SIMULATION--------------------
+        List<Ticket> activeTickets = new ArrayList<>();
+        Random random = new Random();
+        int totalTicketsToGenerate = 15;
+        int vehicleCounter = 1;
+        
+        System.out.println("\n=== STARTING ENTRY SIMULATION ===");
+        for(int i=0;i< totalTicketsToGenerate;i++) {
+        	Vehicle vehicle = randomVehicle(vehicleCounter++);
+        	EntryGate gate= (random.nextBoolean()) ? entryGate1 : entryGate2;
+        	
+        	try {
+        		Ticket ticket= gate.generateTicket(vehicle);
+        		activeTickets.add(ticket);
+        		System.out.println("Ticket Generated:");
+        		System.out.println("Ticket ID: " + ticket.getTickedId());
+        		System.out.println("Entry Time: " + ticket.getEntryTimestamp());
+        		System.out.println("Spot Assigned: " + ticket.getAssignedSpot().getSpotType());	
+        	}
+        	catch (Exception e) {
+                System.out.println("No spots available for vehicle " + vehicle.getLicenceNumber());
+            }
 
-		System.out.println("\n--- VEHICLE ARRIVES ---");
-		Vehicle v1 = new Car("KA-01-9999");
+            showAllFloors(lot);
+            Thread.sleep(500); // small pause 
+        }
+        
+        System.out.println("\n=== SIMULATING EXITS ===");
+        
+        double totalRevenue = 0;
 
-		Ticket t1 = entryGate1.generateTicket(v1);
-		System.out.println("Ticket Generated:");
-		System.out.println("Ticket ID: " + t1.getTickedId());
-		System.out.println("Entry Time: " + t1.getEntryTimestamp());
-		System.out.println("Spot Assigned: " + t1.getAssignedSpot().getSpotType());
+        for (int i = 0; i < activeTickets.size(); i++) {
+        	// only some vehicles exit
+            if (i % 2 == 0) { 
+                Ticket t = activeTickets.get(i);
+                ExitGate gate = (random.nextBoolean()) ? exitGate1 : exitGate2;
 
-        showAllFloors(lot);
+                Thread.sleep(2000); // simulate parking time
+                
+                double fee = gate.processExit(t);
+                totalRevenue += fee;
 
-
-		Thread.sleep(3000);
-
-		// At EXIT GATR
-		System.out.println("\n--- VEHICLE EXITING ---");
-
-		double amount = exitGate1.processExit(t1);
-		System.out.println("Payment Successful!");
-		System.out.println("Total Fee = $" + amount);
-
-        showAllFloors(lot);
-
-		System.out.println("\n--- FLOW COMPLETE ---");
+                System.out.println("\nVehicle " + t.getVehicle().getLicenceNumber() +
+                        " exited. Total Fee = $" + fee);
+                showAllFloors(lot);
+        	
+        }
+        }
+        
+        System.out.println("\n=== SIMULATION COMPLETE ===");
+        System.out.println("TOTAL REVENUE COLLECTED: $" + totalRevenue);
 
 	}
 	
@@ -99,6 +154,14 @@ public class ParkingLotManager {
             System.out.println("\nDisplay for Floor " + f.getParkingFloorId());
             f.updateDisplayBoard();
             f.getDisplayBoard().show();
+        }
+    }
+	
+	private static Vehicle randomVehicle(int count) {
+        switch (count % 3) {
+            case 0: return new Car("CAR-" + count);
+            case 1: return new Motorcycle("BIKE-" + count);
+            default: return new Truck("TRUCK-" + count);
         }
     }
 
