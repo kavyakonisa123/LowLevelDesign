@@ -10,12 +10,7 @@ public class EntryGate {
 		this.id = id;
 		this.strategy = strategy;
 	}
-	
-	public EntryGate(String id, SpotAssignmentStrategy strategy,ParkingLot parkingLot) {
-		this.id = id;
-		this.strategy = strategy;
-		this.parkingLot = parkingLot;
-	}
+
 	
 	public Ticket generateTicket(Vehicle vehicle) {
 		System.out.println("Vehicle " + vehicle.getLicenceNumber() + " in : " + parkingLot.parkingLotId);
@@ -23,6 +18,11 @@ public class EntryGate {
 		if(spot== null) throw new RuntimeException("No spot Available.. sorry");
 		spot.parkVehicle(vehicle);
 		return new Ticket("T-"+ System.currentTimeMillis(),spot,vehicle) ;
+		
+	}
+
+	public void setParkingLot(ParkingLot parkingLot) {
+		this.parkingLot = parkingLot;
 		
 	}	
 	
