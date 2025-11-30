@@ -89,7 +89,7 @@ The system follows:
 
 Below is the class diagram representing the relationship between classes:
 
-![class diagram](design/parkingLotClass.png)
+![class diagram](parkingLotClass.png)
 
 ---
 
