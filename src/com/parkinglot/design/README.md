@@ -146,4 +146,4 @@ Both are selected dynamically at runtime.
 Each floor has a real-time display board that shows:
 
 
-
+You can refer to other low-level designs concepts at https://medium.com/@kavya1234/list/lld-21c82ffd1405 
