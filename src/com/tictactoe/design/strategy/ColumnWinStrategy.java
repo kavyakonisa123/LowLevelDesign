@@ -1,4 +1,8 @@
-package com.tictactoe.design;
+package com.tictactoe.design.strategy;
+
+import com.tictactoe.design.Board;
+import com.tictactoe.design.Move;
+import com.tictactoe.design.Player;
 
 public class ColumnWinStrategy implements WinStrategy {
 

@@ -3,6 +3,11 @@ package com.tictactoe.design;
 import java.util.Arrays;
 import java.util.List;
 
+import com.tictactoe.design.strategy.ColumnWinStrategy;
+import com.tictactoe.design.strategy.DiagonalWinStrategy;
+import com.tictactoe.design.strategy.RowWinStrategy;
+import com.tictactoe.design.strategy.WinStrategy;
+
 
 public class RuleEngine {
 	
